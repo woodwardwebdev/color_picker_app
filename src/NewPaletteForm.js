@@ -20,6 +20,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 
 import { ChromePicker } from "react-color";
+import DraggableColorBox from "./DraggableColorBox";
 
 const drawerWidth = 400;
 
@@ -62,6 +63,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end"
   },
   content: {
+    height: "calc(100vh - 64px)",
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
@@ -165,11 +167,10 @@ export default function NewPaletteForm() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <ul>
-          {colorsArray.map(color => (
-            <li style={{ color: color }}>{color}</li>
-          ))}
-        </ul>
+
+        {colorsArray.map(color => (
+          <DraggableColorBox color={color} />
+        ))}
       </main>
     </div>
   );
