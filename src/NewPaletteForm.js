@@ -81,7 +81,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function NewPaletteForm() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
+  const [pickerColor, setColor] = React.useState("orange");
+  const [colorsArray, setColorsArray] = React.useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -89,6 +91,14 @@ export default function NewPaletteForm() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleColorChange = (color, event) => {
+    setColor(color.hex);
+  };
+
+  const addNewColor = () => {
+    setColorsArray([...colorsArray, pickerColor]);
   };
 
   return (
@@ -111,7 +121,7 @@ export default function NewPaletteForm() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            DIY Palette Fun!
           </Typography>
         </Toolbar>
       </AppBar>
@@ -139,8 +149,13 @@ export default function NewPaletteForm() {
             Random Color
           </Button>
         </div>
-        <ChromePicker />
-        <Button variant="contained" color="primary">
+        <ChromePicker color={pickerColor} onChange={handleColorChange} />
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ backgroundColor: pickerColor }}
+          onClick={addNewColor}
+        >
           Add Color
         </Button>
       </Drawer>
@@ -150,6 +165,11 @@ export default function NewPaletteForm() {
         })}
       >
         <div className={classes.drawerHeader} />
+        <ul>
+          {colorsArray.map(color => (
+            <li style={{ color: color }}>{color}</li>
+          ))}
+        </ul>
       </main>
     </div>
   );
