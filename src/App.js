@@ -9,6 +9,7 @@ import SingleColorPalette from "./SingleColorPalette";
 import NewPaletteForm from "./NewPaletteForm";
 
 import "./App.css";
+import FormTwo from "./FormTwo";
 
 class App extends Component {
   constructor(props, ...rest) {
@@ -57,7 +58,7 @@ class App extends Component {
           )}
         />
 
-        <Route exact path="/test" render={() => <TestPage />} />
+        <Route exact path="/test" render={() => <FormTwo />} />
       </Switch>
       // <div className="App">
       //   <Palette palette={generatePalette(seedColors[4])} />

@@ -15,7 +15,8 @@ const styles = {
     display: "inline-block",
     position: "relative",
     cursor: "pointer",
-    marginBottom: "-3px"
+    marginBottom: "-3px",
+    boxSizing: "border-box"
   }
 };
 
@@ -26,10 +27,10 @@ class DraggableColorBox extends Component {
   }
 
   render() {
-    const { classes, color } = this.props;
+    const { classes, color, name } = this.props;
     return (
       <div className={classes.root} style={{ backgroundColor: color }}>
-        {color}
+        {name}
       </div>
     );
   }
