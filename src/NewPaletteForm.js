@@ -131,6 +131,14 @@ export default function NewPaletteForm(props) {
     props.history.push("/");
   };
 
+  const handleDraggableBoxDelete = () => {};
+
+  const removeColor = colorName => {
+    return setColorsArray(
+      colorsArray.filter(color => color.name !== colorName)
+    );
+  };
+
   useEffect(() => {
     ValidatorForm.addValidationRule("isColorNameUnique", value => {
       return colorsArray.every(
@@ -239,7 +247,12 @@ export default function NewPaletteForm(props) {
         <div className={classes.drawerHeader} />
 
         {colorsArray.map(color => (
-          <DraggableColorBox color={color.color} name={color.name} />
+          <DraggableColorBox
+            color={color.color}
+            name={color.name}
+            handleDelete={removeColor}
+            key={color.name}
+          />
         ))}
       </main>
     </div>
