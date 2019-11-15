@@ -21,7 +21,13 @@ import MailIcon from "@material-ui/icons/Mail";
 
 import { ChromePicker } from "react-color";
 import DraggableColorBox from "./DraggableColorBox";
+import DraggableColorList from "./DraggableColorList";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { arrayExpression } from "@babel/types";
+import { arrayMove } from "react-sortable-hoc";
+import { Link } from "react-router-dom";
+
+import PaletteFormNav from "./PaletteFormNav";
 
 const drawerWidth = 400;
 
@@ -79,6 +85,9 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen
     }),
     marginLeft: 0
+  },
+  link: {
+    textDecoration: "none"
   }
 }));
 
@@ -86,11 +95,13 @@ export default function NewPaletteForm(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const [pickerColor, setColor] = React.useState("orange");
-  const [colorsArray, setColorsArray] = React.useState([
-    { color: "blue", name: "blue" }
-  ]);
+  const [colorsArray, setColorsArray] = React.useState(
+    props.palettes[0].colors
+  );
   const [newName, setNewName] = React.useState("");
   const [newPaletteName, setNewPaletteName] = React.useState("");
+
+  const paletteIsFull = colorsArray.length >= props.maxColors;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -120,23 +131,36 @@ export default function NewPaletteForm(props) {
     setColorsArray([...colorsArray, colorToAdd]);
   };
 
-  const savePalette = () => {
-    let newName = newPaletteName;
+  const savePalette = newPaletteName => {
     const newPalette = {
-      paletteName: newName,
-      id: newName.toLowerCase().replace(/ /g, "-"),
+      paletteName: newPaletteName,
+      id: newPaletteName.toLowerCase().replace(/ /g, "-"),
       colors: colorsArray
     };
     props.savePalette(newPalette);
     props.history.push("/");
   };
 
-  const handleDraggableBoxDelete = () => {};
-
   const removeColor = colorName => {
     return setColorsArray(
       colorsArray.filter(color => color.name !== colorName)
     );
+  };
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    setColorsArray(arrayMove(colorsArray, oldIndex, newIndex));
+  };
+
+  const clearColors = () => {
+    setColorsArray([]);
+  };
+
+  const addRandomColor = () => {
+    const allColors = props.palettes.map(p => p.colors).flat();
+    var rand = Math.floor(Math.random() * allColors.length);
+    const randomColor = allColors[rand];
+    setColorsArray([...colorsArray, randomColor]);
+    console.log(props.maxColors);
   };
 
   useEffect(() => {
@@ -148,50 +172,17 @@ export default function NewPaletteForm(props) {
     ValidatorForm.addValidationRule("isColorUnique", value => {
       return colorsArray.every(({ color }) => color !== pickerColor);
     });
-    ValidatorForm.addValidationRule("paletteNameUnique", value => {
-      return props.palettes.every(
-        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-      );
-    });
   });
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        color="default"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            DIY Palette Fun!
-          </Typography>
-          <ValidatorForm onSubmit={savePalette}>
-            <TextValidator
-              value={newPaletteName}
-              label="New Palette Name"
-              onChange={handlePaletteNameChange}
-              validators={["required", "paletteNameUnique"]}
-              errorMessages={["Please Enter A Name!", "Name Already Used"]}
-            />
-            <Button variant="contained" color="primary" type="submit">
-              Save Palette
-            </Button>
-          </ValidatorForm>
-        </Toolbar>
-      </AppBar>
+      <PaletteFormNav
+        open={open}
+        classes={classes}
+        palettes={props.palettes}
+        savePalette={savePalette}
+        handleDrawerOpen={handleDrawerOpen}
+      />
       <Drawer
         className={classes.drawer}
         variant="persistent"
@@ -209,10 +200,15 @@ export default function NewPaletteForm(props) {
         <Divider />
         <Typography variant="h4">Design Your Palette</Typography>
         <div>
-          <Button variant="contained" color="secondary">
+          <Button variant="contained" color="secondary" onClick={clearColors}>
             Clear Palette
           </Button>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addRandomColor}
+            disabled={paletteIsFull}
+          >
             Random Color
           </Button>
         </div>
@@ -232,10 +228,11 @@ export default function NewPaletteForm(props) {
           <Button
             variant="contained"
             color="secondary"
-            style={{ backgroundColor: pickerColor }}
+            style={{ backgroundColor: paletteIsFull ? "grey" : pickerColor }}
             type="submit"
+            disabled={paletteIsFull}
           >
-            Add Color
+            {paletteIsFull ? "Palette Full" : "Add Color"}
           </Button>
         </ValidatorForm>
       </Drawer>
@@ -244,20 +241,21 @@ export default function NewPaletteForm(props) {
           [classes.contentShift]: open
         })}
       >
+        <DraggableColorList
+          colors={colorsArray}
+          removeColor={removeColor}
+          axis="xy"
+          onSortEnd={onSortEnd}
+        />
         <div className={classes.drawerHeader} />
-
-        {colorsArray.map(color => (
-          <DraggableColorBox
-            color={color.color}
-            name={color.name}
-            handleDelete={removeColor}
-            key={color.name}
-          />
-        ))}
       </main>
     </div>
   );
 }
+
+NewPaletteForm.defaultProps = {
+  maxColors: 20
+};
 
 // class NewPaletteForm extends Component {
 //   constructor(props, ...rest) {
