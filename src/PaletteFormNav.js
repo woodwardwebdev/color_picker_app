@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,8 +10,40 @@ import Button from "@material-ui/core/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { Link } from "react-router-dom";
+import PaletteMetaForm from "./PaletteMetaForm";
 
-const styles = {};
+const drawerWidth = 400;
+
+const styles = theme => ({
+  root: {
+    display: "flex"
+  },
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: "64px"
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2)
+  },
+  link: {
+    textDecoration: "none"
+  },
+  navBtns: {}
+});
 
 class PaletteFormNav extends Component {
   constructor(props, ...rest) {
@@ -20,24 +52,16 @@ class PaletteFormNav extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    ValidatorForm.addValidationRule("paletteNameUnique", value => {
-      return this.props.palettes.every(
-        ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
-      );
-    });
-  }
-
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
-    const { open, classes, savePalette, handleDrawerOpen } = this.props;
+    const { open, savePalette, handleDrawerOpen, classes } = this.props;
     const { newPaletteName } = this.state;
 
     return (
-      <div>
+      <div className={classes.root}>
         <CssBaseline />
         <AppBar
           position="fixed"
@@ -59,33 +83,23 @@ class PaletteFormNav extends Component {
             <Typography variant="h6" noWrap>
               DIY Palette Fun!
             </Typography>
-            <ValidatorForm
-              onSubmit={() => {
-                savePalette(newPaletteName);
-              }}
-            >
-              <TextValidator
-                value={newPaletteName}
-                name="newPaletteName"
-                label="New Palette Name"
-                onChange={this.handleChange}
-                validators={["required", "paletteNameUnique"]}
-                errorMessages={["Please Enter A Name!", "Name Already Used"]}
-              />
-              <Button variant="contained" color="primary" type="submit">
-                Save Palette
-              </Button>
-              <Link to="/" className={classes.link}>
-                <Button variant="contained" color="secondary">
-                  Go Back
-                </Button>
-              </Link>
-            </ValidatorForm>
           </Toolbar>
+          <div classname={classes.navBtns}>
+            <Link to="/" className={classes.link}>
+              <Button variant="contained" color="secondary">
+                Go Back
+              </Button>
+            </Link>
+          </div>
+          <PaletteMetaForm
+            savePalette={savePalette}
+            newPaletteName={newPaletteName}
+            palettes={this.props.palettes}
+          />
         </AppBar>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(PaletteFormNav);
+export default withStyles(styles, { withTheme: true })(PaletteFormNav);

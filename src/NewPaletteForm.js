@@ -3,31 +3,22 @@ import { withStyles } from "@material-ui/styles";
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
+
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 
-import { ChromePicker } from "react-color";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+
 import DraggableColorBox from "./DraggableColorBox";
 import DraggableColorList from "./DraggableColorList";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { arrayExpression } from "@babel/types";
+
 import { arrayMove } from "react-sortable-hoc";
 import { Link } from "react-router-dom";
 
 import PaletteFormNav from "./PaletteFormNav";
+import ColorPickerForm from "./ColorPickerForm";
 
 const drawerWidth = 400;
 
@@ -60,7 +51,9 @@ const useStyles = makeStyles(theme => ({
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    display: "flex",
+    alignItems: "center"
   },
   drawerHeader: {
     display: "flex",
@@ -88,7 +81,17 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     textDecoration: "none"
-  }
+  },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    height: "100%"
+  },
+  buttons: { width: "100%" },
+  btn: { width: "50%", height: "60px" }
 }));
 
 export default function NewPaletteForm(props) {
@@ -111,24 +114,8 @@ export default function NewPaletteForm(props) {
     setOpen(false);
   };
 
-  const handleColorChange = (color, event) => {
-    setColor(color.hex);
-  };
-
-  const handlePaletteNameChange = evt => {
-    setNewPaletteName(evt.target.value);
-  };
-
-  const handleColorNameChange = evt => {
-    setNewName(evt.target.value);
-  };
-
-  const addNewColor = () => {
-    const colorToAdd = {
-      color: pickerColor,
-      name: newName
-    };
-    setColorsArray([...colorsArray, colorToAdd]);
+  const addNewColor = newColor => {
+    setColorsArray([...colorsArray, newColor]);
   };
 
   const savePalette = newPaletteName => {
@@ -163,22 +150,10 @@ export default function NewPaletteForm(props) {
     console.log(props.maxColors);
   };
 
-  useEffect(() => {
-    ValidatorForm.addValidationRule("isColorNameUnique", value => {
-      return colorsArray.every(
-        ({ name }) => name.toLowerCase() !== value.toLowerCase()
-      );
-    });
-    ValidatorForm.addValidationRule("isColorUnique", value => {
-      return colorsArray.every(({ color }) => color !== pickerColor);
-    });
-  });
-
   return (
     <div className={classes.root}>
       <PaletteFormNav
         open={open}
-        classes={classes}
         palettes={props.palettes}
         savePalette={savePalette}
         handleDrawerOpen={handleDrawerOpen}
@@ -198,43 +173,34 @@ export default function NewPaletteForm(props) {
           </IconButton>
         </div>
         <Divider />
-        <Typography variant="h4">Design Your Palette</Typography>
-        <div>
-          <Button variant="contained" color="secondary" onClick={clearColors}>
-            Clear Palette
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={addRandomColor}
-            disabled={paletteIsFull}
-          >
-            Random Color
-          </Button>
+        <div className={classes.container}>
+          <Typography variant="h4">Design Your Palette</Typography>
+          <div classname={classes.buttons}>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={clearColors}
+              className={classes.btn}
+            >
+              Clear Palette
+            </Button>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              color="primary"
+              onClick={addRandomColor}
+              disabled={paletteIsFull}
+            >
+              Random Color
+            </Button>
+          </div>
+          <ColorPickerForm
+            paletteIsFull={paletteIsFull}
+            newColor={pickerColor}
+            addNewColor={addNewColor}
+            colorsArray={colorsArray}
+          />
         </div>
-        <ChromePicker color={pickerColor} onChange={handleColorChange} />
-        <ValidatorForm onSubmit={addNewColor}>
-          <TextValidator
-            value={newName}
-            onChange={handleColorNameChange}
-            label=""
-            validators={["required", "isColorNameUnique", "isColorUnique"]}
-            errorMessages={[
-              "A name must be provided",
-              "That name is taken",
-              "That color is already in the palette"
-            ]}
-          ></TextValidator>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ backgroundColor: paletteIsFull ? "grey" : pickerColor }}
-            type="submit"
-            disabled={paletteIsFull}
-          >
-            {paletteIsFull ? "Palette Full" : "Add Color"}
-          </Button>
-        </ValidatorForm>
       </Drawer>
       <main
         className={clsx(classes.content, {

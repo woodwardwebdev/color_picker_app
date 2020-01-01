@@ -74,7 +74,7 @@ class App extends Component {
           )}
         />
 
-        <Route exact path="/test" render={() => <FormTwo />} />
+        <Route exact path="/test" render={() => <TestPage />} />
       </Switch>
       // <div className="App">
       //   <Palette palette={generatePalette(seedColors[4])} />
