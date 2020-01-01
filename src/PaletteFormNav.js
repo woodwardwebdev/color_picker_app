@@ -11,6 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import PaletteMetaForm from "./PaletteMetaForm";
 import styles from "./styles/PaletteFormNavStyles";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 class PaletteFormNav extends Component {
   constructor(props, ...rest) {
@@ -55,10 +56,10 @@ class PaletteFormNav extends Component {
               edge="start"
               className={clsx(classes.menuButton, open && classes.hide)}
             >
-              <MenuIcon />
+              <ChevronRightIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              DIY Palette Fun!
+              Create Your Palette
             </Typography>
           </Toolbar>
           <div className={classes.navBtns}>

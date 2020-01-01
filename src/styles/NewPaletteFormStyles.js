@@ -37,6 +37,7 @@ const styles = makeStyles(theme => ({
     alignItems: "center"
   },
   drawerHeader: {
+    width: "100%",
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(0, 1),
@@ -46,7 +47,7 @@ const styles = makeStyles(theme => ({
   content: {
     height: "calc(100vh - 64px)",
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: 0,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -69,10 +70,15 @@ const styles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     width: "90%",
-    height: "100%"
+    height: "100%",
+    marginTop: "-22%"
   },
-  buttons: { width: "100%" },
-  btn: { width: "50%", height: "60px" }
+  buttons: {
+    width: "100%",
+    display: "",
+    justifyContent: "center"
+  },
+  btn: { width: "43%", height: "60px", margin: "3%" }
 }));
 
 export default styles;

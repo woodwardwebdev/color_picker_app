@@ -99,7 +99,7 @@ export default function NewPaletteForm(props) {
         </div>
         <Divider />
         <div className={classes.container}>
-          <Typography variant="h4">Design Your Palette</Typography>
+          {/* <Typography variant="h4"></Typography> */}
           <div classname={classes.buttons}>
             <Button
               variant="contained"

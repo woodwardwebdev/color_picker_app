@@ -24,6 +24,9 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
+  hide: {
+    display: "none"
+  },
   menuButton: {
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(2)
