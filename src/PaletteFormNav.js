@@ -25,6 +25,7 @@ const styles = theme => ({
     }),
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     height: "64px"
   },
   appBarShift: {
@@ -42,18 +43,32 @@ const styles = theme => ({
   link: {
     textDecoration: "none"
   },
-  navBtns: {}
+  navBtns: {
+    marginRight: "1rem",
+    "& a": {
+      textDecoration: "none"
+    }
+  },
+  button: {
+    margin: "0 0.5rem",
+    textDecoration: "none"
+  }
 });
 
 class PaletteFormNav extends Component {
   constructor(props, ...rest) {
     super(props, ...rest);
-    this.state = { newPaletteName: "" };
+    this.state = { newPaletteName: "", formShowing: false };
     this.handleChange = this.handleChange.bind(this);
+    this.showForm = this.showForm.bind(this);
   }
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  showForm() {
+    this.setState({ formShowing: true });
   }
 
   render() {
@@ -84,19 +99,33 @@ class PaletteFormNav extends Component {
               DIY Palette Fun!
             </Typography>
           </Toolbar>
-          <div classname={classes.navBtns}>
+          <div className={classes.navBtns}>
             <Link to="/" className={classes.link}>
-              <Button variant="contained" color="secondary">
+              <Button
+                className={classes.button}
+                variant="contained"
+                color="secondary"
+              >
                 Go Back
               </Button>
             </Link>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="primary"
+              onClick={this.showForm}
+            >
+              Save Palette
+            </Button>
           </div>
+        </AppBar>
+        {this.state.formShowing && (
           <PaletteMetaForm
             savePalette={savePalette}
             newPaletteName={newPaletteName}
             palettes={this.props.palettes}
           />
-        </AppBar>
+        )}
       </div>
     );
   }
