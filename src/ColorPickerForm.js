@@ -56,7 +56,7 @@ class ColorPickerForm extends Component {
           className={classes.picker}
           width="100%"
         />
-        <ValidatorForm onSubmit={this.handleSubmit}>
+        <ValidatorForm onSubmit={this.handleSubmit} instantValidate={false}>
           <TextValidator
             variant="filled"
             margin="normal"
@@ -66,6 +66,7 @@ class ColorPickerForm extends Component {
             name="newColorName"
             placeholder="New Color Name"
             label=""
+            autoComplete="off"
             validators={["required", "isColorNameUnique", "isColorUnique"]}
             errorMessages={[
               "A name must be provided",

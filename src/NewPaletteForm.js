@@ -21,14 +21,13 @@ import PaletteFormNav from "./PaletteFormNav";
 import ColorPickerForm from "./ColorPickerForm";
 
 import styles from "./styles/NewPaletteFormStyles";
+import seedColors from "./seedColors";
 
 export default function NewPaletteForm(props) {
   const classes = styles();
   const [open, setOpen] = React.useState(true);
   const [pickerColor, setColor] = React.useState("orange");
-  const [colorsArray, setColorsArray] = React.useState(
-    props.palettes[0].colors
-  );
+  const [colorsArray, setColorsArray] = React.useState(seedColors[0].colors);
   const [newName, setNewName] = React.useState("");
   const [newPaletteName, setNewPaletteName] = React.useState("");
 
