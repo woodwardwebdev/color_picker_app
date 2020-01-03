@@ -30,7 +30,9 @@ const styles = {
   },
   boxContent: {
     color: props =>
-      chroma(props.color).luminance() >= 0.03 ? "rgba(0,0,0,0.6" : "white",
+      chroma(props.color).luminance() >= 0.06
+        ? "rgba(0,0,0,0.6"
+        : "rgba(255,255,255,0.7)",
     position: "absolute",
     width: "100%",
     left: "0px",
