@@ -1,40 +1,40 @@
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { DRAWER_WIDTH } from "../constants";
 
 const drawerWidth = DRAWER_WIDTH;
 
-const styles = makeStyles(theme => ({
+const styles = makeStyles((theme) => ({
   root: {
-    display: "flex"
+    display: "flex",
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   hide: {
-    display: "none"
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0
+    flexShrink: 0,
   },
   drawerPaper: {
     width: drawerWidth,
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   drawerHeader: {
     width: "100%",
@@ -42,7 +42,7 @@ const styles = makeStyles(theme => ({
     alignItems: "center",
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   content: {
     height: "calc(100vh - 64px)",
@@ -50,19 +50,19 @@ const styles = makeStyles(theme => ({
     padding: 0,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth
+    marginLeft: -drawerWidth,
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
+      duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0
+    marginLeft: 0,
   },
   link: {
-    textDecoration: "none"
+    textDecoration: "none",
   },
   container: {
     display: "flex",
@@ -71,14 +71,14 @@ const styles = makeStyles(theme => ({
     alignItems: "center",
     width: "90%",
     height: "100%",
-    marginTop: "-22%"
+    marginTop: "-22%",
   },
   buttons: {
     width: "100%",
     display: "",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  btn: { width: "43%", height: "60px", margin: "3%" }
+  btn: { width: "43%", height: "60px", margin: "3%" },
 }));
 
 export default styles;

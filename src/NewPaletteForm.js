@@ -1,21 +1,21 @@
-import React, { Component, useEffect } from "react";
-import { withStyles } from "@material-ui/styles";
+import React from "react";
+// import { withStyles } from "@material-ui/styles";
 import clsx from "clsx";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+// import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 
-import Typography from "@material-ui/core/Typography";
+// import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
-import DraggableColorBox from "./DraggableColorBox";
+// import DraggableColorBox from "./DraggableColorBox";
 import DraggableColorList from "./DraggableColorList";
 
 import { arrayMove } from "react-sortable-hoc";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 import PaletteFormNav from "./PaletteFormNav";
 import ColorPickerForm from "./ColorPickerForm";
@@ -28,8 +28,8 @@ export default function NewPaletteForm(props) {
   const [open, setOpen] = React.useState(true);
   const [pickerColor, setColor] = React.useState("orange");
   const [colorsArray, setColorsArray] = React.useState(seedColors[0].colors);
-  const [newName, setNewName] = React.useState("");
-  const [newPaletteName, setNewPaletteName] = React.useState("");
+  // const [newName, setNewName] = React.useState("");
+  // const [newPaletteName, setNewPaletteName] = React.useState("");
 
   const paletteIsFull = colorsArray.length >= props.maxColors;
 
@@ -41,20 +41,20 @@ export default function NewPaletteForm(props) {
     setOpen(false);
   };
 
-  const addNewColor = newColor => {
+  const addNewColor = (newColor) => {
     setColorsArray([...colorsArray, newColor]);
   };
 
-  const savePalette = newPalette => {
+  const savePalette = (newPalette) => {
     newPalette.id = newPalette.paletteName.toLowerCase().replace(/ /g, "-");
     newPalette.colors = colorsArray;
     props.savePalette(newPalette);
     props.history.push("/");
   };
 
-  const removeColor = colorName => {
+  const removeColor = (colorName) => {
     return setColorsArray(
-      colorsArray.filter(color => color.name !== colorName)
+      colorsArray.filter((color) => color.name !== colorName)
     );
   };
 
@@ -67,7 +67,7 @@ export default function NewPaletteForm(props) {
   };
 
   const addRandomColor = () => {
-    const allColors = props.palettes.map(p => p.colors).flat();
+    const allColors = props.palettes.map((p) => p.colors).flat();
     let rand;
     let randomColor;
     let isDuplicateColor = true;
@@ -75,7 +75,7 @@ export default function NewPaletteForm(props) {
       rand = Math.floor(Math.random() * allColors.length);
       randomColor = allColors[rand];
       isDuplicateColor = colorsArray.some(
-        color => color.name === randomColor.name
+        (color) => color.name === randomColor.name
       );
     }
     setColorsArray([...colorsArray, randomColor]);
@@ -95,7 +95,7 @@ export default function NewPaletteForm(props) {
         anchor="left"
         open={open}
         classes={{
-          paper: classes.drawerPaper
+          paper: classes.drawerPaper,
         }}
       >
         <div className={classes.drawerHeader}>
@@ -106,7 +106,7 @@ export default function NewPaletteForm(props) {
         <Divider />
         <div className={classes.container}>
           {/* <Typography variant="h4"></Typography> */}
-          <div classname={classes.buttons}>
+          <div className={classes.buttons}>
             <Button
               variant="contained"
               color="secondary"
@@ -135,7 +135,7 @@ export default function NewPaletteForm(props) {
       </Drawer>
       <main
         className={clsx(classes.content, {
-          [classes.contentShift]: open
+          [classes.contentShift]: open,
         })}
       >
         <DraggableColorList
@@ -151,5 +151,5 @@ export default function NewPaletteForm(props) {
 }
 
 NewPaletteForm.defaultProps = {
-  maxColors: 20
+  maxColors: 20,
 };

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -19,7 +18,7 @@ class PaletteMetaForm extends Component {
   }
 
   componentDidMount() {
-    ValidatorForm.addValidationRule("paletteNameUnique", value => {
+    ValidatorForm.addValidationRule("paletteNameUnique", (value) => {
       return this.props.palettes.every(
         ({ paletteName }) => paletteName.toLowerCase() !== value.toLowerCase()
       );
@@ -49,14 +48,14 @@ class PaletteMetaForm extends Component {
   createPalette(emoji) {
     const newPalette = {
       paletteName: this.state.newPaletteName,
-      emoji: emoji.native
+      emoji: emoji.native,
     };
     this.props.savePalette(newPalette);
     this.setState({ stage: "" });
   }
 
   render() {
-    const { savePalette, hideForm } = this.props;
+    const { hideForm } = this.props;
     const { newPaletteName } = this.state;
     return (
       <div>

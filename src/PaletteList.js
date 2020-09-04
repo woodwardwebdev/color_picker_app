@@ -44,8 +44,8 @@ class PaletteList extends Component {
   }
 
   render() {
-    const { palettes, classes, deletePalette } = this.props;
-    const { openDeleteDialog, deletingId } = this.state;
+    const { palettes, classes } = this.props;
+    const { openDeleteDialog } = this.state;
     return (
       <div className={classes.root}>
         <div className={classes.container}>
@@ -54,7 +54,7 @@ class PaletteList extends Component {
             <Link to="/palette/new">New Palette</Link>
           </nav>
           <TransitionGroup className={classes.palettes}>
-            {palettes.map(p => (
+            {palettes.map((p) => (
               <CSSTransition key={p.id} classNames="fade" timeout={500}>
                 <MiniPalette
                   {...p}

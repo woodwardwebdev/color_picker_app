@@ -25,19 +25,19 @@ class ColorPickerForm extends Component {
   handleSubmit() {
     const newColor = {
       color: this.state.currentColor,
-      name: this.state.newColorName
+      name: this.state.newColorName,
     };
     this.props.addNewColor(newColor);
     this.setState({ newColorName: "" });
   }
 
   componentDidMount() {
-    ValidatorForm.addValidationRule("isColorNameUnique", value => {
+    ValidatorForm.addValidationRule("isColorNameUnique", (value) => {
       return this.props.colorsArray.every(
         ({ name }) => name.toLowerCase() !== value.toLowerCase()
       );
     });
-    ValidatorForm.addValidationRule("isColorUnique", value => {
+    ValidatorForm.addValidationRule("isColorUnique", (value) => {
       return this.props.colorsArray.every(
         ({ color }) => color !== this.state.currentColor
       );
@@ -71,7 +71,7 @@ class ColorPickerForm extends Component {
             errorMessages={[
               "A name must be provided",
               "That name is taken",
-              "That color is already in the palette"
+              "That color is already in the palette",
             ]}
           ></TextValidator>
           <Button

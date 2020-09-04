@@ -3,7 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import { generatePalette } from "./ColorHelpers";
 import Palette from "./Palette";
 import PaletteList from "./PaletteList";
-import TestPage from "./TestPage";
 import seedColors from "./seedColors";
 import SingleColorPalette from "./SingleColorPalette";
 import NewPaletteForm from "./NewPaletteForm";
@@ -38,8 +37,8 @@ class App extends Component {
 
   deletePalette(id) {
     this.setState(
-      st => ({
-        palettes: st.palettes.filter(palette => palette.id !== id)
+      (st) => ({
+        palettes: st.palettes.filter((palette) => palette.id !== id),
       }),
       this.syncLocalStorage
     );
@@ -62,7 +61,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/"
-                  render={routeProps => (
+                  render={(routeProps) => (
                     <Page>
                       <PaletteList
                         palettes={this.state.palettes}
@@ -75,7 +74,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/palette/new"
-                  render={routeProps => (
+                  render={(routeProps) => (
                     <Page>
                       <NewPaletteForm
                         savePalette={this.savePalette}
@@ -88,7 +87,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/palette/:id"
-                  render={routeProps => (
+                  render={(routeProps) => (
                     <Page>
                       <Palette
                         palette={generatePalette(
@@ -102,7 +101,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/palette/:paletteId/:colorId"
-                  render={routeProps => (
+                  render={(routeProps) => (
                     <Page>
                       <SingleColorPalette
                         colorId={routeProps.match.params.colorId}
@@ -115,7 +114,7 @@ class App extends Component {
                 />
 
                 <Route
-                  render={routeProps => (
+                  render={(routeProps) => (
                     <Page>
                       <PaletteList
                         palettes={this.state.palettes}
